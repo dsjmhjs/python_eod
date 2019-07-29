@@ -1,0 +1,80 @@
+{#<!--<script src="{{url_for('static', filename='jquery.js')}}"></script>-->#}
+{#<script src="{{url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>#}
+{#<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.css') }}">#}
+{#<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">#}
+{#<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>#}
+{#<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">#}
+{#<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">#}
+{#<script#}
+{#        src="{{url_for('static', filename='bootstrap-select/bootstrap-select.min.js')}}"></script>#}
+{#<link rel=stylesheet type=text/css#}
+{#      href="{{ url_for('static', filename='bootstrap-select/bootstrap-select.min.css') }}">#}
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.multi').each(function () {
+            $(this).selectpicker({
+                'noneSelectedText': 'Nothing Selected'
+            });
+        });
+
+         $('.dynamic_select').change(function(){
+             var id = $(this).attr('id');
+             if(typeof(id) != 'undefined')
+             {
+                 var change_select = {};
+                 $('.dynamic_select').each(function(){
+                     var select_id = $(this).attr('id');
+                     if(typeof(select_id) != 'undefined'){
+                         if($(this).val() != null){
+                             change_select[select_id] = $(this).val();
+                         }
+                     }
+                 });
+//                 change_select[id] = $(this).val();
+                 change_select['strategy_name'] = $('#strategy_name').val();
+                 change_select['report_type'] = $('#report_type').val();
+//                 change_select[id] = $('#'+id).val();
+                 $.ajax({
+                      url: "/dynamic_combine_change",
+                      type: 'POST',
+                      data: {config: JSON.stringify(change_select)},
+                      data_type: 'json',
+                      success: function (msg) {
+                          var data = JSON.parse(msg);
+//                          console.log(data);
+                          for (var option in data) {
+                              var str_ = '';
+                              for (var i = 0; i < data[option].length; i++) {
+                                str_ += '<option value="' + data[option][i] + '">' + data[option][i] + '</option>';
+                              }
+                              $('#' + option).empty();
+                              $('#' + option).html(str_);
+                              $('#' + option).selectpicker('refresh');
+                          }
+
+
+                      }
+                 });
+             }
+         });
+
+    });
+</script>
+
+{% for data in send_data %}
+    <div class="form-group" style="float:left; height:70px;margin-left:10px">
+        <div style="float:left;margin-left:15px">{{data}}</div><br/>
+        <div class="btn-group" style="float:left"
+             id="{{'%s_button' % data}}">
+            <select id="{{data}}" class="form-control multi dynamic_select"
+                    multiple data-live-search="true" data-max-option="1">
+                {% for num in range(send_data[data]|count) %}
+                    <option value="{{ send_data[data][num] }}">
+                        {{ send_data[data][num] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+{% endfor %}

@@ -1,0 +1,4 @@
+{
+  "test_class.py::test": true, 
+  "test_eod_jobs.py": true
+}

@@ -1,0 +1,40 @@
+[Global]
+SqlAddress = 127.0.0.1
+SqlUser = admin
+SqlPassword = adminP@ssw0rd
+SqlPort = 3306
+
+WatchListName = shsz300 arb;global future
+Filter = cff,any;hkg,any
+AutoLoadRelated = true
+OnlyLoadActive = false
+
+StrategyThreadInterval = 0
+
+IsLoadStrategyPositionFromDB = true
+
+IsQueryOrder = false
+IsQueryAccount = false
+
+ControlServerRefreshInterval = 10
+
+LoadStrategyFromDB = false
+
+UseSharedLibrary = true
+StratsLibFolder = strategy_library
+ParallelNum = 0
+
+[Strategy.libVolumeBreakthrough_strategy.VolumeBreakthrough.if_1min_para2]
+WatchList = IF1903
+
+[Strategy.libFollowTrend_strategy.FollowTrend.ih_5min_para1_180201]
+WatchList = IH1903
+
+[Strategy.libFollowTrend_strategy.FollowTrend.if_5min_para1_181025]
+WatchList = IF1903
+
+[Strategy.libFollowTrend_strategy.FollowTrend.ih_5min_para1_181025]
+WatchList = IH1903
+
+[Strategy.libMABreaker_strategy.MABreaker.if_15min_para1_180401]
+WatchList = IF1903

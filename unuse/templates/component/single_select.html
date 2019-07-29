@@ -1,0 +1,27 @@
+{% macro single_select(data) %}
+<script type="text/javascript">
+    $(document).ready(function(){
+       $(".chosen_type").click(function(){
+            var get_id = $(this).attr("id");
+            var group = get_id.split("-");
+            var target_id = group[0];
+            $('#' + target_id).text(target_id + ": " + group[1]);
+       });
+    });
+</script>
+<div class="btn-group" style="">
+    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#"
+       style="margin:5px"
+       id="{{ data[0] }}"> {{data[0]}}
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" id="{{ '%s_option' % data[0] }}">
+        {% for down_content in data[1] %}
+            <li>
+                <a id='{{ "%s-%s" % (data[0], down_content) }}' href="#"
+                   class="chosen_type">{{ down_content }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endmacro %}

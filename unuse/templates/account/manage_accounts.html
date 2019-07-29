@@ -1,0 +1,144 @@
+{% extends "account/account_base.html" %}
+
+{% block account_content %}
+<div class="entry-box manage-Accounts">
+    <h4><strong>账户管理</strong></h4>
+    <hr/>
+    <div class="accounts-box">
+        <div class="accounts" id="accounts">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr class="table-header">
+                    <th>ID</th>
+                    <th>Account_Name</th>
+                    <th>Account_Type</th>
+                    <!--<th>Allow_Targets</th>-->
+                    <th>Fund_Name</th>
+                    <th>Enable</th>
+                    <th>Modify</th>
+                    <th>Del</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for account in accounts %}
+                    <tr>
+                        <td>{{ account.accountid }}</td>
+                        <td>{{ account.accountname }}</td>
+                        <td>{{ account.accounttype }}</td>
+                        <!--<td>{{ account.allow_targets }}</td>-->
+                        <td>{{ account.fund_name }}</td>
+                        <td>{{ account.enable }}</td>
+                        <td>
+                            <a class="btn" title="修改"
+                               onclick="get_account_info('{{ url_for('account.get_account_info', id=account.accountid) }}', {{ account.accountid }})">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-default delete-Account" title="删除"
+                               onclick="delAccount('{{ url_for('account.delete_account', id=account.accountid) }}')">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="add-Account">
+            <a class="btn btn-sm btn-primary add-Account-btn">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                添加账号
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- For add Account form-->
+<div class="modal fade" id="addAccountFormModel">
+    <div class="modal-dialog">
+        <div class="modal-content message_align">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title">添加账号</h4>
+            </div>
+            <form id="addAccountForm" method="post" action="">
+                <div class="modal-body">
+                        <div class="form-group">
+                            {{ form.csrf_token }}
+                            {{ form.account_name.label }}
+                            {{ form.account_name(class='form-control', required='') }}
+                            {{ form.account_type.label }}
+                            {{ form.account_type(class='form-control', required='') }}
+                            {{ form.account_config.label }}
+                            {{ form.account_config(class='form-control') }}
+                            {{ form.allow_targets.label }}（多选）
+                            <!--{{ form.allow_targets(rows=3, multiple=True) }}-->
+                            {{ form.allow_targets(class='form-control', required='') }}
+                            {{ form.fund_name.label }}
+                            {{ form.fund_name(class='form-control', required='') }}
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="addAccountCfmClick" type="submit" class="btn btn-success">确定</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- For edit Account form-->
+<div class="modal fade" id="editAccountFormModel">
+    <div class="modal-dialog">
+        <div class="modal-content message_align">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="ModalTitle"></h4>
+            </div>
+            <form id="editAccountForm" method="post" action="{{ url_for('account.edit_Account') }}">
+                <div class="modal-body">
+                        <div class="form-group">
+                            {{ form2.csrf_token }}
+                            {{ form2.account_id(type='hidden') }}
+                            {{ form2.account_name.label }}
+                            {{ form2.account_name(id='editAccountName', class='form-control', required='') }}
+                            {{ form2.account_config.label }}
+                            {{ form2.account_config(id='editAccountConfig', class='form-control', required='') }}
+                            {{ form2.enable.label }}
+                            {{ form2.enable(id='editEnable', class='form-control', required='') }}
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="editAccountCfmClick" type="submit" class="btn btn-success">确定</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- For delete an Account confirm -->
+<div class="modal fade" id="delAccountCfmModel">
+    <div class="modal-dialog">
+        <div class="modal-content message_align">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title">确认删除账户？</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    您确认要删除吗？
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <a onclick="" id="delAccountCfmClick" class="btn btn-success" data-dismiss="modal">确定</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}

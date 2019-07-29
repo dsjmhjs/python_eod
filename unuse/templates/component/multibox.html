@@ -1,0 +1,93 @@
+{% macro create_multi_box(id_name, box_data) %}
+<head>
+
+<style type="text/css">
+.demo{width:600px; margin-left: 30px; color:#424242;}
+
+</style>
+{#<script type="text/javascript" src="../js/jquery.js"></script>#}
+<script type="text/javascript">
+    $(document).ready(function(){
+        var selected_fields = [];
+        $('.hide_object').css('display', 'none');
+        var class_name = {{ id_name|tojson }};
+        $('.'+class_name).dblclick(function(){
+            var content = $(this).text().trim();
+            $(this).css('display', 'none');
+            $('#hide_' + class_name + '_' + content).css('display', 'block');
+            selected_fields = [];
+            $('.hide_object').each(function(){
+                if($(this).css('display') == 'block'){
+                    selected_fields.push($(this).text().trim());
+                }
+            });
+            $('#select_content').text(selected_fields);
+        });
+        $('.hide_object').dblclick(function(){
+            var content = $(this).text().trim();
+            $(this).css('display', 'none');
+            $('#' + class_name + '_' + content).css('display', 'block');
+            selected_fields.splice(jQuery.inArray(content, selected_fields), 1);
+            $('#select_content').text(selected_fields);
+        });
+
+        $('#all_left').click(function(){
+            $('.'+class_name).css('display', 'block');
+            $('.hide_object').css('display', 'none');
+            selected_fields = [];
+            $('#select_content').text(selected_fields);
+        });
+
+        $('#all_right').click(function(){
+            $('.hide_object').css('display', 'block');
+            $('.'+class_name).css('display', 'none');
+            selected_fields = [];
+            $('.'+class_name).each(function(){
+               selected_fields.push($(this).text().trim());
+            });
+            $('#select_content').text(selected_fields);
+        });
+
+    });
+</script>
+
+</head>
+
+<div id="main">
+    <div id ='select_content' style="display: none">
+
+    </div>
+    <div style="margin-left:30px"><h5> data output fields select(default all)</h5></div>
+  <div class="demo">
+    <div id="sel_form">
+        <div class="two-box" style="width:1000px">
+           <div id="" style="float:left">
+              <select name="liOption[]" id='{{ id_name }}' multiple='multiple' size='8' >
+                  {% for item in box_data %}
+                      <option id="{{ '%s_%s' % (id_name, item) }}" value="{{ item }}"
+                              class="{{ id_name }}">
+                          {{ item }}
+                      </option>
+                  {% endfor %}
+              </select>
+           </div>
+           <div id="direction" style="float:left;margin:40px">
+               <p id="all_right"><span><a>>>>></a></span></p>
+               <p id="all_left"><span><a><<<<</a></span></p>
+           </div>
+           <div style="float:left">
+                <select name="liOption[]" id='selected_box' multiple='multiple' size='8'>
+                    {% for item in box_data %}
+                      <option id="{{ 'hide_%s_%s' % (id_name, item) }}" value="{{ item }}"
+                              class="hide_object">
+                          {{ item }}
+                      </option>
+                  {% endfor %}
+                </select>
+           </div>
+
+        </div>
+
+  </div>
+</div>
+{% endmacro %}

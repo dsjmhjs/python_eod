@@ -1,0 +1,32 @@
+{% extends "system/system_base.html" %}
+
+{% block system_content %}
+<div class="entry-box manage-Accounts">
+    <h4><strong>系统状态</strong></h4>
+    <hr/>
+    <div id="status_box">
+        <div class="accounts">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr class="table-header">
+                    <th>检查项目</th>
+                    {% for server_name in model_dict['servers'] %}
+                        <th>{{server_name}}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for item_name in model_dict['status_items'] %}
+                    <tr>
+                        <td>{{item_name}}</td>
+                        {% for server_name in model_dict['servers'] %}
+                            <td>{{server_status_dict[server_name][item_name]}}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

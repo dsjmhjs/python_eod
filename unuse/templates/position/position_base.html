@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2 entry-box" style="background-color: ">
+            <ul class="nav nav-list">
+				<li class="nav-header">账户期货调整</li>
+			</ul>
+        </div>
+        <div class="col-md-10">
+            {% for category, message in get_flashed_messages(with_categories=true) %}
+                <div class="alert alert-{{category}} alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% block position_content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/position.js') }}"></script>
+{% endblock %}

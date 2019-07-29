@@ -1,0 +1,9 @@
+{% macro single_func(id, data) %}
+<select id="{{id}}" name="server_name"
+        class="selectpicker option multi" style="width:150px"
+         data-live-search="true" data-max-option="1">
+    {% for ind in range(data|count) %}
+        <option value="{{data[ind]}}">{{data[ind]}}</option>
+    {% endfor %}
+</select>
+{% endmacro %}

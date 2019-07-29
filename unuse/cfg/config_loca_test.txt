@@ -1,0 +1,203 @@
+[host]
+ip=172.16.12.118
+type=local_host
+server_name=local_manager
+db_ip=172.16.12.118
+db_port=3306
+db_user=admin
+db_password=adminP@ssw0rd
+
+[config]
+# -----------email config-----------
+smtp_server=smtp.exmail.qq.com
+smtp_port=465
+smtp_username=yseod@derivatives-china.com
+smtp_password=Yan1sheng
+smtp_from=yseod@derivatives-china.com
+
+local_server_ips=172.16.10.50,172.16.10.142,172.16.10.188,172.16.10.166,172.16.10.168
+# -----------wsdl config-----------
+citics_ftp_wsdl_address=http://172.16.10.128:7088
+aggregator_wsdl_address=http://172.16.10.188:8889
+backtest_wsdl_address=http://172.16.11.113:8888
+wind_wsdl_address=http://172.16.12.99:8080
+ts_wsdl_address=http://172.16.10.142:8889
+
+# -----------file path config-----------
+# ---eod工程目录---
+eod_project_folder=D:/code/pythoneod
+
+# ---行情文件备份目录---
+hh_data_backup_path=H:/data_backup/HH_data
+lts_data_backup_path=H:/data_backup/LTS_data
+ctp_data_backup_path=H:/data_backup/CTP_data
+
+# ---每日更新文件存放目录---
+daily_files_folder=Z:/dailyjob/daily_files
+# ---etf文件下载地址---
+etf_file_path=Z:/dailyjob/daily_files/ETF
+# ---datafetcher每日文件下载目录---
+datafetcher_messagefile_folder=Z:/dailyjob/daily_files/messageFile
+# ---行情重建配置文件目录---
+mktdtctr_cfg_folder=Z:/dailyjob/daily_files/MktdtCtr/cfg
+
+
+server_daily_files_folder_template = Z:/dailyjob/daily_server_files/%%s
+# ---托管服务器sql文件存放目录---
+deposit_server_sql_file_folder_template=Z:/dailyjob/daily_server_files/%%s/db
+# ---行情重建校验结果文件---
+mkt_check_file_folder_template=Z:/dailyjob/daily_server_files/%%s/mkt_check_files
+# ---每日订单成交分析结果目录---
+order_statistics_report_folder_template=Z:/dailyjob/daily_server_files/%%s/order_report
+# ---策略相关TradePlat配置文件---
+tradeplat_file_folder_template=Z:/dailyjob/daily_server_files/%%s/TradePlat
+# ---parameter_dict配置文件修改---
+parameter_dict_file_path=Z:/strategy/IntradayMultiFactor/PROD/BackTestResult/parameter_dict.csv
+
+
+# ---TS仓位文件保存目录---
+ts_file_folder_dict=198800888042-TS-balance01-|Z:/dailyjob/ts_order_142;198800888076-TS-xhms01-|Z:/dailyjob/ts_order_50;198800888077-TS-xhhm02-|Z:/dailyjob/ts_order_50
+
+# ---每日文件备份目录---
+data_share_folder=Z:/temp/data_share
+
+# ---股票多因子参数文件目录---
+stock_intraday_folder=Z:/dailyjob/StockIntraday
+
+# ---日志文件备份目录---
+log_backup_folder_template=Z:/dailyjob/trading_log/%%s/tradeplat_log
+
+
+# ---A股持仓风险报告相关目录---
+risk_report_folder=Z:/dailyjob/risk_report
+
+# ---主力合约换月记录目录---
+main_contract_change_file_folder=Z:/dailyjob/future_main_contract_change_info
+
+# ---行情文件目录---
+data_file_folder=Z:/data
+
+# ---回测任务文件目录---
+local_backtest_data_path_base = D:/dailyjob/data_backtest/
+backtestcpp_path_base = D:/dailyjob/backtestcpp/
+local_backtest_info_path = D:/backtest_info/
+state_file_folder_base = D:/state_file/
+
+backtest_result_file_folder=Z:/yansheng/backtest_result
+backtest_info_folder=Z:/dailyjob/cta_backtest_info
+backtest_state_insert_folder=Z:/dailyjob/backtest_state_insert/
+pl_cal_info_folder =Z:/dailyjob/pl_cal_info/
+source_backtest_data_path_base = Z:/data/future/backtest/
+source_backtest_info_path = Z:/dailyjob/cta_backtest_info/
+change_month_info_path = Z:/dailyjob/future_main_contract_change_info/
+backtest_result_folder_path_base = Z:/dailyjob/backtest_result/
+state_insert_sql_save_folder_path_base = Z:/dailyjob/backtest_state_insert/
+strategy_online_offline_path = Z:/dailyjob/cta_update_info/strategy_online_offline_file.csv
+
+# ---multifactor策略因子参数文件目录---
+multifactor_parameter_base_folder=Z:/temp/longling
+multifactor_parameter_file_path_template=Z:/dailyjob/IntradaySignal/BackTestResult/%%s/MultiFactor_Parameter.csv
+multifactor_parameter_file_folder=Z:/dailyjob/IntradaySignal/MultiFactorWeightData_yansheng-ss7
+vwap_parameter_file_folder=Z:/dailyjob/IntradaySignal/MultiFactorWeightData_yansheng-ss7
+
+
+# ---策略目标文件目录---
+multifactor_result_folder=Z:/temp/longling/StockSelection/result_daily
+eventdriven_result_folder=Z:/temp/fifi/EventDriven/result_production_test/PaperTrade/trade_flow
+eventreal_result_folder=Z:/temp/wangjian/Stock Selection
+
+# ---策略调仓文件目录---
+stock_selection_folder=Z:/dailyjob/StockSelection
+
+strategyloader_file_folder=Z:/dailyjob/server_cfg
+
+# etf文件备份地址(北京)
+etf_file_backup_folder_beijing=Y:/temp/data_share
+
+# ---IPO文件---
+ipo_file_path=Z:/dailyjob/ipo_ticker_list/yansheng.csv
+
+# ---phone_trade文件存放地址---
+phone_trade_folder=Z:/dailyjob/phone_trade_file
+
+[wind_db]
+ip=172.16.12.66
+type=local_db
+db_ip=172.16.12.66
+db_port=3306
+db_user=data
+db_password=123data
+
+
+[base_server_config]
+port=22
+user=trader
+pwd=admin@yansheng123
+db_port=3306
+db_user=admin
+db_password=adminP@ssw0rd
+
+home_folder=/home/trader
+tradeplat_project_folder=/home/trader/apps/TradePlat
+mktdtctr_project_folder=/home/trader/apps/MktdtCtr
+
+eod_project_folder=/home/trader/dailyjob/eod_aps
+datafetcher_project_folder=/home/trader/dailyjob/DataFetcher
+etf_upload_folder=/home/trader/dailyjob/ETF
+
+db_backup_folder=/home/trader/dbBackUp
+
+
+[test_118]
+ip=172.16.12.118
+user=trader
+pwd=123@trader
+type=trader_server
+db_ip=172.16.12.118
+check_port_list=41205,41305,41405
+night_session=True
+cta_server=True
+stock_server=True
+history_data_file_path=/home/trader/history_data/quotes
+
+[test_88]
+ip=172.16.12.88
+user=trader
+pwd=123@trader
+type=trader_server
+db_ip=172.16.12.88
+db_user=root
+db_password=asdasd123a
+check_port_list=41205,41305,41405
+night_session=True
+cta_server=True
+stock_server=True
+history_data_file_path=/home/trader/history_data/quotes
+
+[test_99]
+ip=172.16.12.99
+user=trader
+pwd=123@trader
+type=trader_server
+db_ip=172.16.12.99
+db_user=root
+db_password=123456
+check_port_list=41205,41305,41405
+night_session=True
+cta_server=True
+stock_server=True
+history_data_file_path=/home/trader/history_data/quotes
+
+[wind_db]
+type=db_server
+db_ip=172.16.12.66
+db_port=3306
+db_user=data
+db_password=123data
+
+[local118]
+type=db_server
+db_ip=172.16.12.118
+db_port=3306
+db_user=admin
+db_password=adminP@ssw0rd

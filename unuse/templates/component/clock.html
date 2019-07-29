@@ -1,0 +1,33 @@
+{% macro demo_clock(module_name) %}
+<head>
+    <script type="text/javascript" src="static/bootstrap-clock/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="static/bootstrap-clock/js/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link rel="stylesheet" type="text/css"href="static/bootstrap-clock/css/datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css"href="static/bootstrap-clock/css/bootstrap.min.css">
+</head>
+
+<script type="text/javascript">
+//    $(document).ready(function(){
+//        $('.form_datetime').datetimepicker({
+//            minView: "month",
+//            //language:  'zh-CN',
+//            format: 'yyyy-mm-dd',
+//            todayBtn:  1,
+//            autoclose: 1,
+//        });
+//    });
+
+</script>
+
+<div class="form-group row">
+    <div class="left col-xs-3 text-right">
+        <label for="test"></label>
+    </div>
+    <div class="right col-xs-6 text-left">
+        <div class="input-group">
+          <input type="text" class="form-control form_datetime" id="addtime" name="addtime" value="" placeholder="">
+          <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-time" aria-hidden="true"></span></span>
+        </div>
+    </div>
+</div>
+{% endmacro %}

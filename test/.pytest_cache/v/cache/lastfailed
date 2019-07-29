@@ -1,0 +1,5 @@
+{
+  "photo_test.py": true, 
+  "selenium_test.py": true, 
+  "splinter_test.py": true
+}

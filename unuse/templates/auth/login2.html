@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <!-- CSS -->
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/form-elements.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+
+	<script src="{{url_for('static', filename='jquery.js')}}"></script>
+	<script src="{{url_for('static', filename='js/md5.js')}}"></script>
+	<script>
+		function check(){
+			password_str = $('#form-password').val();
+		 	$('#form-password').val(hex_md5(password_str));
+		 	return true;
+		}
+	</script>
+</head>
+<body>
+
+        <div class="top-content">
+
+            <div class="inner-bg">
+                <div class="container">
+
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                        	<div class="form-top">
+                        		<div class="form-top-left">
+                        			<h3>Login to our site</h3>
+                            		<p>Enter your username and password to log on:</p>
+                        		</div>
+                        		<div class="form-top-right">
+                        			<!--<i class="fa fa-lock"></i>-->
+                                    <img src="static/logo.png" >
+                        		</div>
+                            </div>
+                            <div class="form-bottom">
+			                    <form role="form" action="{{ url_for('login') }}" method="post" class="login-form" onsubmit="return check()">
+			                    	<div class="form-group">
+			                    		<label class="sr-only" for="form-username">Username</label>
+			                        	<input type="text" name="username" placeholder="Username..." class="form-username form-control" id="form-username">
+			                        </div>
+			                        <div class="form-group">
+			                        	<label class="sr-only" for="form-password">Password</label>
+			                        	<input type="password" name="password" placeholder="Password..." class="form-password form-control" id="form-password">
+			                        </div>
+			                        <button type="submit" class="btn">Log in!</button>
+			                    </form>
+		                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</body>
+</html>

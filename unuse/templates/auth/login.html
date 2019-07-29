@@ -1,0 +1,57 @@
+
+<script src="{{url_for('static', filename='jquery.js')}}"></script>
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#submit').click(function (){
+                alert(1);
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="box">
+<div class="login-box">
+<div class="login-title text-center">
+<h1><small>Login </small></h1>
+</div>
+    {% for msg in get_flashed_messages()  %}
+    <div class="alert alert-warning">
+        {{ msg }}
+    </div>
+    {% endfor %}
+<div class="login-content ">
+<div class="form">
+<form action="{{ url_for('login') }}" method="post">
+<div class="form-group">
+ <div class="col-xs-12 ">
+  <div class="input-group">
+   <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+   <input type="text" id="username" name="username" class="form-control" placeholder="account">
+  </div>
+ </div>
+</div>
+<div class="form-group">
+ <div class="col-xs-12 ">
+  <div class="input-group">
+   <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+   <input type="password" id="password" name="password" class="form-control"
+          placeholder="password">
+  </div>
+ </div>
+</div>
+<div class="form-group form-actions">
+ <div class="col-xs-4 col-xs-offset-4 ">
+  <button type="submit" class="btn btn-sm btn-info"><span class="glyphicon
+  glyphicon-off"></span> submit</button>
+ </div>
+</div>
+</form>
+
+</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>

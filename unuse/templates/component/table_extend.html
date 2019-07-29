@@ -1,0 +1,49 @@
+{% macro demo_table(data) %}
+<head>
+    <link rel="stylesheet" href="/static/bootstrap-table/dist/bootstrap-table.min.css">
+    <script src="/static/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/static/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/static/dataTables.bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/dataTables.bootstra.css">
+    <script src="/static/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datatable').dataTable({
+                "oLanguage": {
+                    "sUrl": "/static/zh_CN.json"
+                }
+            });
+        });
+    </script>
+</head>
+
+{% if data['data']|length > 0 %}
+<div class="container-fluid" style="width:700px;float:left;margin:10px">
+    <div class="row-fluid" style="margin-bottom:10px">
+        <span class="label label-success">{{data['title']}}</span>
+    </div>
+    <div class="row-fluid">
+        <table class="table table-striped table-bordered table-hover datatable">
+            <thead>
+                <tr>
+                    {% for item in data['header'] %}
+                    <th>{{item}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for list_ in data['data'] %}
+                <tr>
+                    {% for ind in range(data['header']|length) %}
+                    <td>{{list_[ind]}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
+

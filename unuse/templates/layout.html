@@ -1,0 +1,70 @@
+{% import 'component/table_extend.html' as table_extend %}
+{% import 'component/table.html' as table %}
+{% import 'component/data_require_form.html' as data_require_form %}
+{% import 'component/multibox.html' as multi_box %}
+{% import 'component/common_single_select.html' as common_single %}
+
+
+<title>YS Web</title>
+
+
+<script src="{{url_for('static', filename='jquery.js')}}"></script>
+<script src="{{url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+<scriptc src="{{url_for('static', filename='bootstrap-table/dist/bootstrap-table.min.js')}}"></scriptc>
+<script src="{{ url_for('static', filename='js/account.js') }}"></script>
+
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-table/dist/bootstrap-table.min.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/common.css') }}">
+
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"
+              onclick="collapse()">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Flaskr</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-fixed-top navbar-inverse"
+         id="bs-example-navbar-collapse-1"
+         role="navigation" style="">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{{ url_for('layout') }}">首页</a></li>
+        <li><a href="{{ url_for('apscheduler_jobs') }}">任务列表</a></li>
+        <li><a href="{{ url_for('tool_list.eod_tools') }}">工具列表</a></li>
+        <li><a href="{{ url_for('system.status_info') }}">系统管理</a></li>
+        <li><a href="{{ url_for('report.report_risks') }}">risk展示</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+          {% if session.get('username') %}
+          <li style="float:right"><a>welcome, {{ session.get('username') }}</a></li>
+          <li><a href="{{ url_for('logout') }}">logout</a></li>
+          {% endif %}
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+<div>
+
+</div>
+
+<script>
+  $(".navbar-collapse").collapse({
+      toggle:true
+  });
+
+  function collapse(){
+    $(".navbar-collapse").collapse("toggle");
+  }
+</script>
+  {% block body %}{% endblock %}
+  {% block scripts %}{% endblock %}
+</nav>

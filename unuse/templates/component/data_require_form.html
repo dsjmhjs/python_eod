@@ -1,0 +1,68 @@
+{% import 'component/multi_select.html' as multi_demo%}
+{% import 'component/single_select.html' as single_demo%}
+{% macro demo_form(data, width, data_output_folder='/data/future/data_website/') %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#data_type').text('data_type: future_type');
+        $('#contract').css('display', 'none');
+        $('#future_type_list_button').css('width', '300px');
+
+        $('#data_type-future_type').click(function(){
+           $('#contract').css('display', 'none');
+           $('#future_type_list_button').css('display', 'block');
+           $('#future_type_list_button').css('width', '300px');
+           $('#with_adj').removeAttr('disabled');
+        });
+        $('#data_type-contract').click(function(){
+           $('#contract').css('display', 'block');
+           $('#future_type_list_button').css('display', 'none');
+           $('#with_adj').attr('disabled', 'disabled');
+        });
+    });
+</script>
+<style type="text/css">
+    input {
+        width: 150px; margin-left:9px; margin-right:5px;
+    }
+</style>
+
+<div class="container" style="float:left;width:{{ width }}px;">
+    <div class="row">
+        <div class="col-md-offset-1 col-md-6" style="border:1px; width:1000px;margin:17px">
+                <div style="margin-bottom:5px">
+                    {{ single_demo.single_select(['data_type',['future_type', 'contract']]) }}
+                    {{ single_demo.single_select(['freq_type', ['Bar', 'Quote']])}}
+                    {{ multi_demo.multi_select(data['future_type_list']) }}
+                    <input type="email" class="inputer" placeholder="Contract: RB1705, AG1712"
+                           id="contract"
+                    style="height:30px;margin-top:5px;width:400px">
+{#                    #}
+{#                    {{ single_demo.single_select(data['freq']) }}#}
+                </div>
+                <div class="form-group" style="margin-left:3px">
+
+                    {{ single_demo.single_select(['with_adj', ['True', 'False']])}}
+                    {{ single_demo.single_select(['TimeStampNotation', ['9:30', '9:31']])}}
+                    {{ single_demo.single_select(['freq_unit', ['min', 'sec']])}}
+                    <input type="email" class="inputer" placeholder="freq default 1" id="freq"
+                    style="height:30px;margin-top:15px">
+
+                </div>
+                <div class="form-group">
+                    <input type="email" class="inputer" placeholder="offset default 0(0-60)"
+                           id="offset" >
+                    <input type="email" class="inputer" placeholder="start_day" id="start_day">
+                    <input type="email" class="inputer" placeholder="end_day" id="end_day">
+
+                </div>
+
+                <div class="input-prepend" style="margin-left:10px">
+                  <span class="add-on" style="height:30px; width:280px">
+                      output_folder: {{ data_output_folder }}</span>
+                  <input class="span2" id="output_folder" type="text" placeholder="output_folder"
+                         style="height:30px">
+                </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}

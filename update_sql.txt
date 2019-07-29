@@ -1,0 +1,7 @@
+2019-03-06
+INSERT INTO `jobs`.`menu_list` (`id`, `subject_name`, `name`, `describe`, `url`, `weight`) VALUES ('38', '数据查询', '异常订单查询', 'unusual_order_list', '/unusual_order_list', '38');
+----------------------------------------------------------------
+2019-02-28
+ALTER TABLE common.`future_main_contract`
+DROP COLUMN `WARNING_DAYS`,
+ADD COLUMN `WARNING_DAYS`  int NULL AFTER `NIGHT_FLAG`;

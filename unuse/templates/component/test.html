@@ -1,0 +1,44 @@
+<head>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // var id_name = {{ data['title']|tojson }};
+            $('.close').click(function(){
+                if($(this).text().trim() == 'hide'){
+                    $(this).parent('div').siblings().css('display', 'none');
+                    $(this).text('show');
+                }
+                else{
+                    $(this).parent('div').siblings().css('display', 'block');
+                    $(this).text('hide');
+                }
+            })
+        });
+
+    </script>
+</head>
+
+<div class="panel-heading">
+{{data['title']}}
+{#<button type="button" class="close {{ '%s_close' % data['title'] }}"#}
+{#        aria-label="Close">hide</button>#}
+</div>
+<div style="width:1200px;margin:20px">
+    <table class="table table-hover table-striped table-hover">
+        <thead>
+            <tr>
+                {% for item in data['header'] %}
+                <th>{{item}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for list_ in data['data'] %}
+            <tr>
+                {% for ind in range(data['header']|length) %}
+                <th>{{list_[ind]}}</th>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}控制面板{% endblock %}
+
+{% block body %}
+    <script>
+        $(document).ready(function(){
+
+            // show processing modal
+            function show_modal(msg) {
+                $('#myModal').modal({
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+                $("#log_content_div").html(msg);
+            }
+
+            function close_modal(){
+                 $('#myModal').modal('hide');
+            }
+
+            function click_confirm(){
+                var msg = "Are you sure?";
+                if (confirm(msg) == true){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+
+            $('.service').click(function(){
+                var if_work = click_confirm();
+
+                if(if_work != true)
+                    return;
+
+                var id = $(this).attr('id');
+                var id_group = id.split('/');
+                var func_type = id_group[1];
+                var obj_id = id_group[0];
+                var url_address =  'startup_task_tid';
+                var config_dict = {
+                    'id': obj_id,
+                    'func_type': func_type
+                }
+                var config_data = {
+                    config_data: JSON.stringify(config_dict)
+                };
+                show_modal(config_dict['func_type'] + ' is running');
+                $.ajax({
+                    url: url_address,
+                    type: 'POST',
+                    data: config_data,
+                    data_type: 'json',
+                    success: function(msg){
+                        $("#log_content_div").html(msg);
+                        window.location.reload();
+                    }
+                });
+
+            });
+        });
+    </script>
+
+    <div class="container">
+        <h1 class="page-header">任务列表 <button type="button" class="btn btn-sm btn-info" onclick="query_run_log();">日志</button>
+
+        </h1>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+                <th>#</th>
+                <th>任务名</th>
+                <th>执行时间</th>
+                <th>下次执行时间</th>
+                <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for obj in jobs %}
+                <tr>
+                    <td>{{ loop.index}}</td>
+                    <td><div title="{{ obj.name }}">{{ obj.id }}</div></td>
+                    {% if obj.run_time and obj.run_time[:10] < now_date_str[:10] %}
+                        <td><font color = "#A8A8A8">{{ obj.run_time }}</font></td>
+                    {% else %}
+                        <td>{{ obj.run_time }}</td>
+                    {% endif %}
+
+                    {% if obj.next_run_time and  obj.next_run_time[:10] == now_date_str[:10] %}
+                        <td><font color = "blue">{{ obj.next_run_time }}</font></td>
+                    {% elif  obj.next_run_time and  obj.next_run_time[:10] == next_date_str %}
+                        <td><font color = "#FF7A00">{{ obj.next_run_time }}</font></td>
+                    {% else %}
+                        <td><font color = "green">{{ obj.next_run_time }}</font></td>
+                    {% endif %}
+                    <td>
+                        <a class="service btn btn-success btn-sm" id="{{'%s/run' % obj.id}}">重新运行</a>&nbsp;
+                        <a class="service btn btn-sm btn-danger" id="{{'%s/pause' % obj.id}}">暂停</a>
+                        <a class="service btn btn-sm btn-warning" id="{{'%s/resume' % obj.id}}">恢复</a>
+                    </td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">LOG_INFO</h4>
+                </div>
+                <div class="modal-body" id="log_content_div"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type=text/javascript>
+        var $SCRIPT_ROOT = {{request.script_root|tojson|safe}};
+    </script>
+    <script type="text/javascript">
+        function myrefresh()
+        {
+               window.location.reload();
+        }
+        setTimeout('myrefresh()', 120000); //指定1秒刷新一次
+
+        function query_run_log(){
+           $.getJSON($SCRIPT_ROOT + '/query_run_log', {
+                now: new Date().getTime()
+          },
+          function(data) {
+                 run_long_list = data.run_long_list
+                 $("#log_content_div").html(run_long_list.join("<br>"));
+                 $('#myModal').modal({
+                    keyboard: true
+                });
+          });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,328 @@
+{% extends "layout.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}控制面板{% endblock %}
+
+{% block body %}
+    <!--<script type="text/javascript" src="{{ url_for('static', filename='jquery.js') }}"></script>-->
+    <style type="text/css">
+        input{
+            margin-left:10px;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            // =========================================================================================================
+            function change_status(){
+                var service_list = [];
+                $('#single_service_list option').each(function(){
+                    var service_name = $(this).val();
+                    service_list.push(service_name);
+                });
+
+                var service_dict = {
+                    'service_list': service_list
+                }
+
+                config_data = get_send_config_format(service_dict);
+                $.ajax({
+                    url: 'get_service_status',
+                    type: 'POST',
+                    data: config_data,
+                    data_type: 'json',
+                    success: function(msg){
+                        var data =  JSON.parse(msg);
+                        console.log(msg);
+                        var status_dict = data['status_dict'];
+
+                        for (var service_name in status_dict){
+                            option_bool = "#single_service_list option[value='" + service_name + "']"
+                            var status = status_dict[service_name];
+                            var status_str = service_name + '(' + status + ')';
+                            $(option_bool).html(status_str);
+                        }
+
+                    }
+                });
+            }
+            change_status();
+
+            function show_modal(msg) {
+                $('#myModal').modal({
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+                $("#log_content_div").html(msg);
+                $("#log_content_div").css('color', 'black');
+            }
+
+            function close_modal(){
+                 $('#myModal').modal('hide');
+            }
+
+            function click_confirm(){
+                var msg = "是否执行 ";
+                if (confirm(msg) == true){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+
+            // =========================================================================================
+            $('.run_button').click(function(){
+                var value = $(this).attr('id');
+                var if_work = click_confirm();
+
+                if(if_work == false)
+                    return;
+
+                var config_dict = {};
+                config_dict['func_type'] = value;
+
+                if(value == 'service_manager_btn'){
+                    config_dict['server_name'] = $('#server_select1').val();
+                    config_dict['manager_option'] = $('#manager_option1').val();
+                }
+                else if(value == 'server_manager_btn'){
+                    config_dict['manager_option'] = $('#manager_option2').val();
+                }
+                else if(value == 'algo_file_build_btn'){
+                    config_dict['server_name'] = $('#server_select5').val();
+                    config_dict['operation_type'] = $('#operation_type').val();
+                }
+                else if(value == 'upgrade_btn'){
+                    config_dict['server_name'] = $('#server_select6').val();
+                    config_dict['upgrade_file_path'] = $('#upgrade_file_path').val();
+                }
+
+                $('.service').attr('disabled', 'disabled');
+
+                start_function_or_not = 'running'
+                show_modal(config_dict['func_type'] + ' is running');
+                send_task_request('service_func_select', config_dict);
+            });
+
+            $('#log_show_option_btn').click(function(){
+                config_dict = {};
+                config_dict['func_type'] = 'log_show_option';
+                config_dict['select_log'] = $('#log_show_option').val();
+                config_dict['log_line_num'] = $('#log_line_num').val();
+                config_dict['upload_or_not'] = $('#upload_or_not').val()
+                if (config_dict['log_line_num'] == '')
+                     config_dict['log_line_num'] = 20;
+                show_modal(config_dict['func_type'] + ' is running');
+                send_task_request('service_func_select', config_dict);
+            });
+
+            // =========================================================================================
+            // change format from dict to json stringify format
+            function get_send_config_format(config_dict){
+                var config_data = {
+                    config_data: JSON.stringify(config_dict)
+                };
+                return config_data;
+            }
+            
+            // =========================================================================================
+            // ajax send config_dict to designed url address
+            function send_task_request(func_name, config_dict){
+                var config_data = get_send_config_format(config_dict);
+                $.ajax({
+                    url: func_name,
+                    type: 'POST',
+                    data: config_data,
+                    data_type: 'json',
+                    success: function(msg){
+                        console.log(config_data);
+                        $("#log_content_div").html(msg);
+                        $('.service').removeAttr('disabled');
+                        start_function_or_not = '';
+                        close_modal();
+                        var start = msg.indexOf("Error");
+                        if (start == 0){
+                            $("#log_content_div").css('color', 'red');
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
+
+    <div class="container" id="container_box">
+        <h1 class="page-header">工具列表
+        </h1>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+                <th>序号</th>
+                <th>工具类型</th>
+                <th>工具名</th>
+                <th>参数</th>
+                <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+             <!--server manager-->
+             <tr>
+                 <td>1</td>
+                 <td>交易程序</td>
+                 <td>单服务控制器</td>
+                 <td>服务名:
+                     <select id="server_select1" style="width:250px; height:30px">
+                     {% for item in server_list %}
+                        <option value="{{item}}">{{item}}</option>
+                     {% endfor %}
+                     </select>
+                     &nbsp; 选项:
+                     <select id="manager_option1" style=" height:30px">
+                     {% for item in ['Quit', 'Kill', 'Start', 'Update Position', 'cmd:save pf_position', 'cmd:update pf'] %}
+                        <option value="{{item}}">{{item}}</option>
+                     {% endfor %}
+                     </select>
+                 </td>
+                 <td>
+                     <a class="btn btn-success btn-sm run_button" id="service_manager_btn">运行</a>&nbsp;
+                 </td>
+             </tr>
+             <!--start datafetcher-->
+             <tr>
+                 <td>2</td>
+                 <td>交易程序</td>
+                 <td>服务控制器</td>
+                 <td>
+                     选项:
+                     <select id="manager_option2" style=" height:30px">
+                     {% for item in ['Restart',] %}
+                        <option value="{{item}}">{{item}}</option>
+                     {% endfor %}
+                     </select>
+                 </td>
+                 <td>
+                     <a class="btn btn-success btn-sm run_button" id="server_manager_btn">运行</a>&nbsp;
+                 </td>
+             </tr>
+             <!--log shower-->
+             <tr>
+                 <td>3</td>
+                 <td>系统工具</td>
+                 <td>系统日志查看</td>
+                 <td>服务名:
+                     <select id="server_select3" style="width:250px; height:30px">
+                     {% for item in server_list %}
+                        <option value="{{item}}">{{item}}</option>
+                     {% endfor %}
+                     </select>
+                     选项:
+                     <select id="log_show_option" style=" height:30px">
+                     {% for item in log_show_option %}
+                        <option value="{{item}}">{{item}}</option>
+                     {% endfor %}
+                     </select>
+                     输出行数:<input type="text" id="log_line_num" placeholder="20" style="width: 40px">
+                 </td>
+                 <td>
+                     <a class="btn btn-success btn-sm run_button" id="log_show_option_btn">运行</a>&nbsp;
+                 </td>
+             </tr>
+             <!--log shower-->
+             <tr>
+                 <td>3</td>
+                 <td>系统工具</td>
+                 <td>国信TS仓位更新</td>
+                 <td>
+                 </td>
+                 <td>
+                     <a class="btn btn-success btn-sm run_button" id="ts_update_index">运行</a>&nbsp;
+                 </td>
+             </tr>
+             <tr>
+                 <td>4</td>
+                 <td>系统工具</td>
+                 <td>国信OMAProxy重启</td>
+                 <td>
+                 </td>
+                 <td>
+                     <a class="btn btn-success btn-sm run_button" id="omaproxy_restart">运行</a>&nbsp;
+                 </td>
+             </tr>
+             <tr>
+                 <td>5</td>
+                 <td>系统工具</td>
+                 <td>多因子调仓工具</td>
+                 <td>服务名:
+                     <select id="server_select5" style="width:250px; height:30px">
+                         <option value="All">All</option>
+                     {% for item in server_list %}
+                        <option value="{{item}}">{{item}}</option>
+                     {% endfor %}
+                     </select>
+                     选项:
+                     <select id="operation_type" style=" height:30px">
+                        <option value="change">change</option>
+                        <option value="add">add</option>
+                        <option value="close">close</option>
+                     </select>
+                 </td>
+                 <td>
+                     <a class="btn btn-success btn-sm run_button" id="algo_file_build_btn">运行</a>&nbsp;
+                 </td>
+             </tr>
+             <tr>
+                 <td>6</td>
+                 <td>系统工具</td>
+                 <td>系统升级</td>
+                 <td>服务名:
+                     <select id="server_select6" style="width:250px; height:30px">
+                         <option value="All">All</option>
+                     {% for item in server_list %}
+                        <option value="{{item}}">{{item}}</option>
+                     {% endfor %}
+                     </select>
+                     &nbsp;
+                     文件位置:<input type="text" id="upgrade_file_path" placeholder="" style="width: 350px">
+                     &nbsp;
+
+                 </td>
+                 <td>
+                     <a class="btn btn-success btn-sm run_button" id="upgrade_btn">运行</a>&nbsp;
+                 </td>
+             </tr>
+
+             <tr>
+                 <td>7</td>
+                 <td>系统工具</td>
+                 <td>取消None状态订单</td>
+                 <td>服务名:
+                     <select id="server_select7" style="width:250px; height:30px">
+                         <option value="All">All</option>
+                     {% for item in server_list %}
+                        <option value="{{item}}">{{item}}</option>
+                     {% endfor %}
+                     </select>
+                 </td>
+                 <td>
+
+                 </td>
+             </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:800px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">task status</h4>
+                </div>
+                <div class="modal-body" id="log_content_div"></div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

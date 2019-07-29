@@ -1,0 +1,7 @@
+[config]
+wsdl_ip=172.16.10.128
+wsdl_port=7088
+ftp_ip=10.23.134.221
+ftp_port=21
+user=023_ys_eod
+pwd=Citics@023

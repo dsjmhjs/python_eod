@@ -1,0 +1,21 @@
+{% macro single_select(id, data) %}
+<script type="text/javascript">
+</script>
+<style>
+    .common_select{
+        width:150px
+    }
+</style>
+<div style="float:left;margin:10px" id="{{'%s_block' % id}}">
+    <div style="width:150px">
+                <!--<label for="name">server:</label>-->
+        <div style="padding-left:10px;border:1px solid">{{id}}</div>
+        <select id="{{id}}" name="server_name"
+        class="common_select" data-max-option="1">
+        {% for ind in range(data|count) %}
+            <option value="{{data[ind]}}">{{data[ind]}}</option>
+        {% endfor %}
+</select>
+    </div>
+</div>
+{% endmacro %}

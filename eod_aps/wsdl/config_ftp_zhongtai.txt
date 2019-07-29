@@ -1,0 +1,7 @@
+[config]
+wsdl_ip=172.16.10.121
+wsdl_port=7088
+ftp_ip=59.36.23.197
+ftp_port=6688
+user=yansheng
+pwd=H153c@ZK*&0DrRB101rX

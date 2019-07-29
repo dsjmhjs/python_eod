@@ -1,0 +1,96 @@
+{% extends "account/account_base.html" %}
+
+{% block account_content %}
+<div class="entry-box manage-Restrictions">
+    <h4><strong>风控管理</strong></h4>
+    <hr/>
+    <div class="restrictions-box">
+        <div class="restrictions" id="restrictions">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr class="table-header">
+                    <th>Account_ID</th>
+                    <th>max_operation</th>
+                    <th>max_cancel</th>
+                    <th>max_order_flow_speed</th>
+                    <th>max_cancel_ratio_threshold</th>
+                    <th>max_cancel_ratio</th>
+                    <!--<th>min_fill_ratio_threshold</th>-->
+                    <!--<th>min_fill_ratio_alarm</th>-->
+                    <!--<th>min_fill_ratio_block</th>-->
+                    <!--<th>max_buy_quota</th>-->
+                    <th>Modify</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for restriction in restrictions %}
+                    <tr>
+                        <td>{{ restriction.account_id }}</td>
+                        <td>{{ restriction.max_operation}}</td>
+                        <td>{{ restriction.max_cancel}}</td>
+                        <td>{{ restriction.max_order_flow_speed}}</td>
+                        <td>{{ restriction.max_cancel_ratio_threshold}}</td>
+                        <td>{{ restriction.max_cancel_ratio}}</td>
+                        <!--<td>{{ restriction.min_fill_ratio_threshold}}</td>-->
+                        <!--<td>{{ restriction.min_fill_ratio_alarm}}</td>-->
+                        <!--<td>{{ restriction.min_fill_ratio_block}}</td>-->
+                        <!--<td>{{ restriction.max_buy_quota}}</td>-->
+                        <td>
+                            <a class="btn" title="修改"
+                               onclick="get_restriction_info('{{ url_for('account.get_restriction_info', id=restriction.account_id) }}', {{ restriction.account_id }})">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- For edit Account form-->
+<div class="modal fade" id="editRestrictionFormModel">
+    <div class="modal-dialog">
+        <div class="modal-content message_align">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="ModalTitle"></h4>
+            </div>
+            <form id="editRestrictionForm" method="post" action="{{ url_for('account.edit_Restriction') }}">
+                <div class="modal-body">
+                        <div class="form-group">
+                            {{ form.csrf_token}}
+                            {{ form.account_id.label}}
+                            {{ form.account_id(id='editaccount_id',class='form-control',required='')}}
+                            {{ form.max_operation.label}}
+                            {{ form.max_operation(id='editmax_operation',class='form-control',required='')}}
+                            {{ form.max_cancel.label}}
+                            {{ form.max_cancel(id='editmax_cancel',class='form-control',required='')}}
+                            {{ form.max_order_flow_speed.label}}
+                            {{ form.max_order_flow_speed(id='editmax_order_flow_speed',class='form-control',required='')}}
+                            {{ form.max_cancel_ratio_threshold.label}}
+                            {{ form.max_cancel_ratio_threshold(id='editmax_cancel_ratio_threshold',class='form-control',required='')}}
+                            {{ form.max_cancel_ratio.label}}
+                            {{ form.max_cancel_ratio(id='editmax_cancel_ratio',class='form-control',required='')}}
+                            {{ form.min_fill_ratio_threshold.label}}
+                            {{ form.min_fill_ratio_threshold(id='editmin_fill_ratio_threshold',class='form-control',required='')}}
+                            {{ form.min_fill_ratio_alarm.label}}
+                            {{ form.min_fill_ratio_alarm(id='editmin_fill_ratio_alarm',class='form-control',required='')}}
+                            {{ form.min_fill_ratio_block.label}}
+                            {{ form.min_fill_ratio_block(id='editmin_fill_ratio_block',class='form-control',required='')}}
+                            {{ form.max_buy_quota.label}}
+                            {{ form.max_buy_quota(id='editmax_buy_quota',class='form-control',required='')}}
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="editRestrictionCfmClick" type="submit" class="btn btn-success">确定</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}

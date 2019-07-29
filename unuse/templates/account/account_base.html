@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2 entry-box" style="background-color: ">
+            <ul class="nav nav-list">
+				<li class="nav-header">系统管理</li>
+                <li><a href="{{ url_for('account.manage_users') }}">用戶管理</a></li>
+				<li><a href="{{ url_for('account.manage_accounts') }}">账户管理</a></li>
+				<li><a href="{{ url_for('account.manage_restrictions') }}">风控管理</a></li>
+			</ul>
+        </div>
+        <div class="col-md-10">
+            {% for category, message in get_flashed_messages(with_categories=true) %}
+                <div class="alert alert-{{category}} alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% block account_content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/account.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% macro multi_select(data) %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.multi').each(function () {
+            $(this).selectpicker({
+                'noneSelectedText': $(this).attr("id")
+            });
+        });
+    });
+</script>
+<div class="form-group" style="">
+    <div class="btn-group" style="width:auto;margin-left:10px" id="{{'%s_button' % data[0]}}">
+        <select id="{{data[0]}}" name="" class="selectpicker form-control option multi"
+                multiple data-live-search="true" data-max-option="1">
+
+            {% for num in range(data[1]|count) %}
+                <option value="{{ data[1][num] }}">
+                    {{ data[1][num] }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+{% endmacro %}

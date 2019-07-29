@@ -1,0 +1,24 @@
+[host]
+ip=127.0.0.1
+type=server_host
+server_name=nanhua
+db_ip=127.0.0.1
+db_port=17100
+db_user=admin
+db_password=adminP@ssw0rd
+
+[config]
+home_folder=/home/trader
+tradeplat_project_folder=/home/trader/apps/TradePlat
+mktdtctr_project_folder=/home/trader/apps/MktdtCtr
+
+eod_project_folder=/home/trader/dailyjob/eod_aps
+
+datafetcher_project_folder=/home/trader/dailyjob/DataFetcher
+# ---datafetcher每日文件下载目录---
+datafetcher_messagefile_folder=/home/trader/dailyjob/DataFetcher/messageFile
+
+etf_file_path=/home/trader/dailyjob/ETF
+
+market_file_folder=/home/trader/dailyjob/DataFetcher/marketFile
+history_data_folder=/home/trader/history_data
